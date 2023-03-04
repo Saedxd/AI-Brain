@@ -1,26 +1,61 @@
-import 'package:chatgpt/src/pages/splash_page.dart';
+import 'dart:io';
+
+import 'package:built_value/built_value.dart';
+import 'package:chatgpt/App/app.dart';
+import 'package:chatgpt/Injection.dart';
+import 'package:country_codes/country_codes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+String version ="";
+List<String> testDeviceIds = ['CEC696FEC7BC222F50D74D74ACD13A8A'];
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
- MobileAds.instance.initialize();
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class MyHttpOverrides extends HttpOverrides{
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Chat UI',
-      debugShowCheckedModeBanner: false,
-      home: SplashPage(),
-    );
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }
+
+//getTranslated(context,"home_page")!,
+void main() async {
+  HttpOverrides.global =  MyHttpOverrides();
+//SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//     statusBarColor: Colors.transparent,
+//  ));
+
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  //RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("CEC696FEC7BC222F50D74D74ACD13A8A"));
+  await iniGetIt();
+ // await CountryCodes.init();
+  // await Gleap.initialize(
+  //   token: '93AmJho7YPNoLs3F5Oe3jPZHlxF7wjZ5',
+  // );
+  await ScreenUtil.ensureScreenSize();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+        systemNavigationBarColor: Colors.black
+    ),
+  );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  WidgetsFlutterBinding.ensureInitialized();
+  // MobileAds.instance.initialize();
+  // RequestConfiguration configuration = RequestConfiguration(testDeviceIds: testDeviceIds);
+  //
+  // MobileAds.instance.updateRequestConfiguration(configuration);
+  runApp(MyApp());
+}
+
 ///keytool -genkey -v -keystore upload-keystore.jks -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload
 //// flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
 //// flutter pub get && flutter pub run build_runner watch
