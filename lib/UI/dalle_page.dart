@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'full_screen.dart';
 
 class DallePage extends StatefulWidget {
-  const DallePage({
+   DallePage({
     super.key,
   });
 
@@ -37,16 +38,16 @@ class _DallePageState extends State<DallePage> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () => Navigator.of(context).pop(),
-          child: const Icon(
+          child:  Icon(
             Icons.arrow_back_ios,
-            size: 22,
+            size: 22.w,
             color: Colors.black,
           ),
         ),
-        title: const Text(
+        title:  Text(
           'Chat GPT',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -54,9 +55,9 @@ class _DallePageState extends State<DallePage> {
       ),
       body: SafeArea(
         child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 5,
+          margin:  EdgeInsets.symmetric(
+            horizontal: 15.w,
+            vertical: 5.h,
           ),
           child: Column(
             children: [
@@ -83,7 +84,7 @@ class _DallePageState extends State<DallePage> {
                               tag: "",
                               child: Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6)),
+                                    borderRadius: BorderRadius.circular(6.r)),
                                 height: index % 2 == 0 ? 180 : 250,
                                 width: MediaQuery.of(context).size.width / 3,
                                 child: ImageCard(
@@ -108,11 +109,11 @@ class _DallePageState extends State<DallePage> {
 
   Widget searchingWidget() {
     if (searching) {
-      return const CircularProgressIndicator(
+      return  CircularProgressIndicator(
         color: Color(0xFF292B4D),
       );
     } else {
-      return const Text(
+      return  Text(
         "Search for any image",
         style: TextStyle(color: Colors.white),
       );
@@ -121,15 +122,15 @@ class _DallePageState extends State<DallePage> {
 
   Widget _formChat() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
+      padding:  EdgeInsets.symmetric(
+        vertical: 10.h,
       ),
       child: TextField(
         controller: searchController,
-        style: const TextStyle(color: Colors.black),
+        style:  TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: 'Type your message...',
-          hintStyle: const TextStyle(color: Colors.grey),
+          hintStyle:  TextStyle(color: Colors.grey),
           suffixIcon: InkWell(
             onTap: () async {
               setState(() {
@@ -146,33 +147,33 @@ class _DallePageState extends State<DallePage> {
             },
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFF292B4D),
+                borderRadius: BorderRadius.circular(10.r),
+                color:  Color(0xFF292B4D),
               ),
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.all(5),
-              child: const Icon(
+              padding:  EdgeInsets.all(10.w),
+              margin:  EdgeInsets.all(5.w),
+              child:  Icon(
                 Icons.search,
                 color: Colors.white,
-                size: 28,
+                size: 28.sp,
               ),
             ),
           ),
           filled: true,
           fillColor: Colors.grey.shade100,
-          labelStyle: const TextStyle(fontSize: 12),
-          contentPadding: const EdgeInsets.all(20),
+          labelStyle:  TextStyle(fontSize: 12.sp),
+          contentPadding:  EdgeInsets.all(20.w),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.grey.shade100,
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.grey.shade100,
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
           ),
         ),
       ),
@@ -185,7 +186,7 @@ class Images {
 }
 
 class ImageCard extends StatelessWidget {
-  const ImageCard({super.key, required this.imageData});
+   ImageCard({super.key, required this.imageData});
 
   final String imageData;
 
@@ -197,17 +198,17 @@ class ImageCard extends StatelessWidget {
         imageUrl: imageData,
         fit: BoxFit.cover,
         progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
-            height: 150,
-            width: 150,
+            height: 150.h,
+            width: 150.w,
             child: Shimmer.fromColors(
               baseColor: Colors.grey.shade100,
               highlightColor: Colors.white,
               child: Container(
-                height: 220,
-                width: 130,
+                height: 220.h,
+                width: 130.w,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(4)),
+                    borderRadius: BorderRadius.circular(4.r)),
               ),
             )),
       ),
@@ -217,7 +218,7 @@ class ImageCard extends StatelessWidget {
 
 class CustomPageRoute extends MaterialPageRoute {
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 500);
+  Duration get transitionDuration =>  Duration(milliseconds: 500);
 
   CustomPageRoute({builder}) : super(builder: builder);
 }

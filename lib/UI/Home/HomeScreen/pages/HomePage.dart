@@ -15,14 +15,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+   HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  static AdRequest request = const AdRequest(nonPersonalizedAds: true);
+  static AdRequest request =  AdRequest(nonPersonalizedAds: true);
   InterstitialAd? _interstitialAd;
   int _numInterstitialLoadAttempts = 0;
   int maxFailedLoadAttempts = 3;
@@ -43,8 +43,8 @@ class _HomePageState extends State<HomePage> {
   final BannerAd myBanner = BannerAd(
     adUnitId: AdMobService.bannerAdUnitId ?? '',
     size: AdSize.fullBanner,
-    request: const AdRequest(),
-    listener: const BannerAdListener(),
+    request:  AdRequest(),
+    listener:  BannerAdListener(),
   );
 
   void _createInterstitialAd() {
@@ -111,43 +111,47 @@ class _HomePageState extends State<HomePage> {
           return
             Scaffold(
               appBar: AppBar(
-                title: const Text(
-                  'Open Ai',
+                title:  Text(
+                  'ChatGpt',
                   style: TextStyle(color: Colors.black),
                 ),
                 backgroundColor: Colors.white,
                 elevation: 1,
                 centerTitle: true,
               ),
-              body: Column(
-                children: [
-                  buttonWidget('Search By Images', () {
-                    _showInterstitialAd();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DallePage(),
-                      ),
-                    );
-                  }),
-                  buttonWidget(
-                    'Chat With me',
-                        () {
-                      _showInterstitialAd();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ChatPage(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+              body: Container(
+                width: w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // buttonWidget('Search By Images', () {
+                    //   _showInterstitialAd();
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => DallePage(),
+                    //     ),
+                    //   );
+                    // }),
+                    buttonWidget(
+                      'Start',
+                          () {
+                        _showInterstitialAd();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  ChatPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
               bottomNavigationBar: Container(
                   alignment: Alignment.center,
                   width: w,
-                  height: 100,
+                  height: 100.h,
                   child: StatefulBuilder(
                     builder: (context, setState) => AdWidget(ad: myBanner),)
               ),
@@ -161,19 +165,16 @@ class _HomePageState extends State<HomePage> {
     return InkWell(
       onTap: onTap,
       child: Container(
+        height: 100.h,
+        width: 200.w,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
+          color: Colors.purple,
           border: Border.all(
             color: Colors.grey.shade400,
           ),
         ),
-        padding: const EdgeInsets.symmetric(
-          vertical: 40,
-        ),
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
-        ),
+
         child: Center(
           child: Text(
             text,

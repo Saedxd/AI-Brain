@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+   ChatPage({super.key});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -66,7 +66,7 @@ ScrollController controller = ScrollController();
 
 
           return Scaffold(
-            backgroundColor: const Color(0xFF292B4D),
+            backgroundColor:  Color(0xFF292B4D),
             body: SafeArea(
               child: Stack(
                 children: [
@@ -75,16 +75,16 @@ ScrollController controller = ScrollController();
                       _topChat(),
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                          padding:  EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
                           width: double.infinity,
-                          decoration: const BoxDecoration(
+                          decoration:  BoxDecoration(
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(45), topRight: Radius.circular(45)),
+                                topLeft: Radius.circular(45.r), topRight: Radius.circular(45.r)),
                             color: Colors.white,
                           ),
                           child: ListView.builder(
                             controller: controller,
-                            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                            physics:  BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             itemCount: state.chatList!.length,
@@ -96,7 +96,7 @@ ScrollController controller = ScrollController();
                         ),
                       ),
                       SizedBox(
-                        height: 110.h,
+                        height: 89.h,
                       )
                     ],
                   ),
@@ -120,7 +120,7 @@ ScrollController controller = ScrollController();
 
   _topChat() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding:  EdgeInsets.symmetric(horizontal: 25.w, vertical: 30.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -128,16 +128,16 @@ ScrollController controller = ScrollController();
             children: [
               GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
-                child: const Icon(
+                child:  Icon(
                   Icons.arrow_back_ios,
-                  size: 20,
+                  size: 25.w,
                   color: Colors.white,
                 ),
               ),
-              const Text(
+               Text(
                 'Chat GPT',
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 22.sp,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
@@ -153,7 +153,7 @@ ScrollController controller = ScrollController();
           //             builder: (BuildContext context, StateSetter state) {
           //           return Container(
           //             height: 400,
-          //             decoration: const BoxDecoration(
+          //             decoration:  BoxDecoration(
           //                 color: Colors.white,
           //                 borderRadius: BorderRadius.only(
           //                   topLeft: Radius.circular(20),
@@ -163,7 +163,7 @@ ScrollController controller = ScrollController();
           //               mainAxisAlignment: MainAxisAlignment.start,
           //               mainAxisSize: MainAxisSize.min,
           //               children: <Widget>[
-          //                 const Padding(
+          //                  Padding(
           //                   padding: EdgeInsets.symmetric(vertical: 15.0),
           //                   child: Text(
           //                     'Settings',
@@ -177,17 +177,17 @@ ScrollController controller = ScrollController();
           //                   color: Colors.grey.shade700,
           //                 ),
           //                 // Padding(
-          //                 //   padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+          //                 //   padding:  EdgeInsets.fromLTRB(20, 2, 20, 2),
           //                 //   child: DropdownButtonFormField(
           //                 //     items: models,
-          //                 //     borderRadius: const BorderRadius.only(),
+          //                 //     borderRadius:  BorderRadius.only(),
           //                 //     focusColor: Colors.amber,
           //                 //     onChanged: (String? s) {},
-          //                 //     decoration: const InputDecoration(
+          //                 //     decoration:  InputDecoration(
           //                 //         hintText: "Select Model"),
           //                 //   ),
           //                 // ),
-          //                 const Padding(
+          //                  Padding(
           //                   padding: EdgeInsets.fromLTRB(20, 20, 20, 2),
           //                   child: Align(
           //                       alignment: Alignment.topLeft,
@@ -196,9 +196,9 @@ ScrollController controller = ScrollController();
           //                 Slider(
           //                   min: 0,
           //                   max: 1000,
-          //                   activeColor: const Color(0xFFE58500),
+          //                   activeColor:  Color(0xFFE58500),
           //                   inactiveColor:
-          //                       const Color.fromARGB(255, 230, 173, 92),
+          //                        Color.fromARGB(255, 230, 173, 92),
           //                   value: tokenValue.toDouble(),
           //                   onChanged: (value) {
           //                     state(() {
@@ -207,7 +207,7 @@ ScrollController controller = ScrollController();
           //                   },
           //                 ),
           //                 Padding(
-          //                   padding: const EdgeInsets.symmetric(vertical: 10.0),
+          //                   padding:  EdgeInsets.symmetric(vertical: 10.0),
           //                   child: Row(
           //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
           //                     children: [
@@ -222,9 +222,9 @@ ScrollController controller = ScrollController();
           //                             color: Colors.grey.shade200,
           //                             borderRadius: BorderRadius.circular(40),
           //                           ),
-          //                           padding: const EdgeInsets.symmetric(
+          //                           padding:  EdgeInsets.symmetric(
           //                               vertical: 15, horizontal: 20),
-          //                           child: const Center(
+          //                           child:  Center(
           //                             child: Text(
           //                               'Cancel',
           //                               style: TextStyle(
@@ -244,12 +244,12 @@ ScrollController controller = ScrollController();
           //                           width:
           //                               MediaQuery.of(context).size.width / 2.2,
           //                           decoration: BoxDecoration(
-          //                             color: const Color(0xFFE58500),
+          //                             color:  Color(0xFFE58500),
           //                             borderRadius: BorderRadius.circular(40),
           //                           ),
-          //                           padding: const EdgeInsets.symmetric(
+          //                           padding:  EdgeInsets.symmetric(
           //                               vertical: 15, horizontal: 20),
-          //                           child: const Center(
+          //                           child:  Center(
           //                             child: Text(
           //                               'Save',
           //                               style: TextStyle(
@@ -270,7 +270,7 @@ ScrollController controller = ScrollController();
           //       },
           //     );
           //   },
-          //   child: const Icon(
+          //   child:  Icon(
           //     Icons.more_vert_rounded,
           //     size: 25,
           //     color: Colors.white,
@@ -296,15 +296,15 @@ ScrollController controller = ScrollController();
   // Widget _bodyChat() {
   //   return Expanded(
   //     child: Container(
-  //       padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+  //       padding:  EdgeInsets.only(left: 10, right: 10, top: 10),
   //       width: double.infinity,
-  //       decoration: const BoxDecoration(
+  //       decoration:  BoxDecoration(
   //         borderRadius: BorderRadius.only(
   //             topLeft: Radius.circular(45), topRight: Radius.circular(45)),
   //         color: Colors.white,
   //       ),
   //       child: ListView(
-  //         physics: const BouncingScrollPhysics(),
+  //         physics:  BouncingScrollPhysics(),
   //         children: [
   //           ListView.builder(
   //             shrinkWrap: true,
@@ -355,27 +355,27 @@ ScrollController controller = ScrollController();
         children: [
           Flexible(
             child: Container(
-              margin: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 10,
+              margin:  EdgeInsets.only(
+                left: 10.w,
+                right: 10.w,
+                top: 10.h,
               ),
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 10,
+              padding:  EdgeInsets.symmetric(
+                vertical: 10.h,
+                horizontal: 10.w,
               ),
               decoration: BoxDecoration(
                 color: chat == 0 ? Colors.indigo.shade100 : Colors.indigo.shade50,
                 borderRadius: chat == 0
-                    ? const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
+                    ?  BorderRadius.only(
+                        topLeft: Radius.circular(10.r),
+                        topRight: Radius.circular(10.r),
+                        bottomLeft: Radius.circular(10.r),
                       )
-                    : const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
+                    :  BorderRadius.only(
+                        topLeft: Radius.circular(10.r),
+                        topRight: Radius.circular(10.r),
+                        bottomRight: Radius.circular(10.r),
                       ),
               ),
               child: chatWidget(message),
@@ -391,11 +391,11 @@ ScrollController controller = ScrollController();
 
 
     SizedBox(
-    width: 250.0,
+    width: 250.0.w,
     child: DefaultTextStyle(
-    style: const TextStyle(
+    style:  TextStyle(
     color: Colors.black,
-    fontSize: 16,
+    fontSize: 16.sp,
     ),
     child: AnimatedTextKit(
     animatedTexts: [
@@ -422,7 +422,7 @@ ScrollController controller = ScrollController();
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding:  EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
           color: Colors.white,
           child: TextField(
             controller: mesageController,
@@ -454,27 +454,27 @@ ScrollController controller = ScrollController();
                 }),
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: const Color(0xFF292B4D)),
-                  padding: const EdgeInsets.all(14),
-                  child: const Icon(
+                      borderRadius: BorderRadius.circular(50.r),
+                      color:  Color(0xFF292B4D)),
+                  padding:  EdgeInsets.all(14),
+                  child:  Icon(
                     Icons.send_rounded,
                     color: Colors.white,
-                    size: 28,
+                    size: 28.w,
                   ),
                 ),
               ),
               filled: true,
               fillColor: Colors.blueGrey.shade50,
-              labelStyle: const TextStyle(fontSize: 12),
-              contentPadding: const EdgeInsets.all(20),
+              labelStyle:  TextStyle(fontSize: 12.sp),
+              contentPadding:  EdgeInsets.all(20.w),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blueGrey.shade50),
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(25.r),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blueGrey.shade50),
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(25.r),
               ),
             ),
           ),

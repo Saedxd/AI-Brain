@@ -68,6 +68,7 @@ void main() async {
 
 
 //todo : make loading finish once bubbles are successfuly settled correctly
+// git push origin main -f               to Force push code and not worry about pulling anything
 
 
 //…or create a new repository on the command line
