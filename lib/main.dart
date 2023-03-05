@@ -20,6 +20,7 @@ class MyHttpOverrides extends HttpOverrides{
   }
 }
 
+
 //getTranslated(context,"home_page")!,
 void main() async {
   HttpOverrides.global =  MyHttpOverrides();
@@ -60,6 +61,7 @@ void main() async {
 //// flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
 //// flutter pub get && flutter pub run build_runner watch
 //// flutter logs
+
 //// flutter build apk --split-per-abi
 //// flutter build appbundle
 //flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --obfuscate --split-debug-info=Bubbles\build\app\outputs\flutter-apk

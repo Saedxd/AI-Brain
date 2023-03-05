@@ -15,7 +15,18 @@ abstract class ChatEvent {}
 abstract class SendMessage extends ChatEvent
     implements Built<SendMessage,SendMessageBuilder> {
   String? get Msg;
+  String? get Model;
 
  SendMessage._();
   factory SendMessage([updates(SendMessageBuilder b)]) = _$SendMessage;
 }
+
+abstract class SetChatComponents extends ChatEvent
+    implements Built<SetChatComponents, SetChatComponentsBuilder> {
+  String? get Msg;
+  int? get is_me;
+
+  SetChatComponents._();
+  factory SetChatComponents([Function(SetChatComponentsBuilder b) updates]) = _$SetChatComponents;
+}
+

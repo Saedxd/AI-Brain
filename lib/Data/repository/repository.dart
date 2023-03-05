@@ -18,7 +18,7 @@ class Repository implements IRepository {
 Future<ChatModel> SendMessageToChatGpt(
   String Msg,
   String model,
-  String max_tokens
+    int max_tokens
     )async {
     final Data = await _ihttpHelper.SendMessageToChatGpt(Msg,model,max_tokens);
     return Data;

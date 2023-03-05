@@ -11,7 +11,7 @@ abstract class IHttpHelper {
   Future<ChatModel> SendMessageToChatGpt(
       String Msg,
       String model,
-      String max_tokens
+      int max_tokens
       );
   // Future<GetNewsModel> GetNews(String Country,String category);
   //

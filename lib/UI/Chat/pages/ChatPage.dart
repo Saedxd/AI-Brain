@@ -1,5 +1,13 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:chatgpt/Data/prefs_helper/iprefs_helper.dart';
+import 'package:chatgpt/Injection.dart';
+import 'package:chatgpt/UI/Chat/bloc/Chat_bloc.dart';
+import 'package:chatgpt/UI/Chat/bloc/Chat_event.dart';
+import 'package:chatgpt/UI/Chat/bloc/Chat_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,16 +17,23 @@ class ChatPage extends StatefulWidget {
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
+class ChatComponents{
+  String msg="";
+  int is_me = 0;
+}
 
 class _ChatPageState extends State<ChatPage> {
+  final pref = sl<IPrefsHelper>();
+  final _ChatBloc = sl<ChatBloc>();
   String messagePrompt = '';
   int tokenValue = 500;
-  List<String> chatList = [];
+ScrollController controller = ScrollController();
   List<String> modelsList = [];
   late SharedPreferences prefs;
   @override
   void initState() {
     super.initState();
+
     //initPrefs();
   }
 
@@ -44,24 +59,53 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF292B4D),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                _topChat(),
-              _bodyChat(),
-                 SizedBox(
-                  height: 75.h,
-                )
-              ],
+    return BlocBuilder(
+        bloc: _ChatBloc,
+        builder: (BuildContext context, ChatState state)
+        {
+
+
+          return Scaffold(
+            backgroundColor: const Color(0xFF292B4D),
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      _topChat(),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(45), topRight: Radius.circular(45)),
+                            color: Colors.white,
+                          ),
+                          child: ListView.builder(
+                            controller: controller,
+                            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: state.chatList!.length,
+                            itemBuilder: (context, index) => _itemChat(
+                              chat: state.chatList![index].is_me,
+                              message:state.chatList![index].msg,
+                            ),
+                          )
+                        ),
+                      ),
+                      SizedBox(
+                        height: 110.h,
+                      )
+                    ],
+                  ),
+                  _formChat(),
+                ],
+              ),
             ),
-          _formChat(),
-          ],
-        ),
-      ),
+          );
+        }
     );
   }
 
@@ -73,11 +117,12 @@ class _ChatPageState extends State<ChatPage> {
     return prefs.getInt("token") ?? 1;
   }
 
+
   _topChat() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -98,137 +143,242 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ],
           ),
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet<void>(
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (BuildContext context) {
-                  return StatefulBuilder(
-                      builder: (BuildContext context, StateSetter state) {
-                    return Container(
-                      height: 400,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          )),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.0),
-                            child: Text(
-                              'Settings',
-                              style: TextStyle(
-                                color: Color(0xFFF75555),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            color: Colors.grey.shade700,
-                          ),
-                          // Padding(
-                          //   padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                          //   child: DropdownButtonFormField(
-                          //     items: models,
-                          //     borderRadius: const BorderRadius.only(),
-                          //     focusColor: Colors.amber,
-                          //     onChanged: (String? s) {},
-                          //     decoration: const InputDecoration(
-                          //         hintText: "Select Model"),
-                          //   ),
-                          // ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(20, 20, 20, 2),
-                            child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text("Token")),
-                          ),
-                          Slider(
-                            min: 0,
-                            max: 1000,
-                            activeColor: const Color(0xFFE58500),
-                            inactiveColor:
-                                const Color.fromARGB(255, 230, 173, 92),
-                            value: tokenValue.toDouble(),
-                            onChanged: (value) {
-                              state(() {
-                                tokenValue = value.round();
-                              });
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2.2,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 20),
-                                    child: const Center(
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    saveData(tokenValue);
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2.2,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFE58500),
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 20),
-                                    child: const Center(
-                                      child: Text(
-                                        'Save',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+          // GestureDetector(
+          //   onTap: () {
+          //     showModalBottomSheet<void>(
+          //       context: context,
+          //       backgroundColor: Colors.transparent,
+          //       builder: (BuildContext context) {
+          //         return StatefulBuilder(
+          //             builder: (BuildContext context, StateSetter state) {
+          //           return Container(
+          //             height: 400,
+          //             decoration: const BoxDecoration(
+          //                 color: Colors.white,
+          //                 borderRadius: BorderRadius.only(
+          //                   topLeft: Radius.circular(20),
+          //                   topRight: Radius.circular(20),
+          //                 )),
+          //             child: Column(
+          //               mainAxisAlignment: MainAxisAlignment.start,
+          //               mainAxisSize: MainAxisSize.min,
+          //               children: <Widget>[
+          //                 const Padding(
+          //                   padding: EdgeInsets.symmetric(vertical: 15.0),
+          //                   child: Text(
+          //                     'Settings',
+          //                     style: TextStyle(
+          //                       color: Color(0xFFF75555),
+          //                       fontWeight: FontWeight.bold,
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 Divider(
+          //                   color: Colors.grey.shade700,
+          //                 ),
+          //                 // Padding(
+          //                 //   padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+          //                 //   child: DropdownButtonFormField(
+          //                 //     items: models,
+          //                 //     borderRadius: const BorderRadius.only(),
+          //                 //     focusColor: Colors.amber,
+          //                 //     onChanged: (String? s) {},
+          //                 //     decoration: const InputDecoration(
+          //                 //         hintText: "Select Model"),
+          //                 //   ),
+          //                 // ),
+          //                 const Padding(
+          //                   padding: EdgeInsets.fromLTRB(20, 20, 20, 2),
+          //                   child: Align(
+          //                       alignment: Alignment.topLeft,
+          //                       child: Text("Token")),
+          //                 ),
+          //                 Slider(
+          //                   min: 0,
+          //                   max: 1000,
+          //                   activeColor: const Color(0xFFE58500),
+          //                   inactiveColor:
+          //                       const Color.fromARGB(255, 230, 173, 92),
+          //                   value: tokenValue.toDouble(),
+          //                   onChanged: (value) {
+          //                     state(() {
+          //                       tokenValue = value.round();
+          //                     });
+          //                   },
+          //                 ),
+          //                 Padding(
+          //                   padding: const EdgeInsets.symmetric(vertical: 10.0),
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //                     children: [
+          //                       InkWell(
+          //                         onTap: () {
+          //                           Navigator.of(context).pop(false);
+          //                         },
+          //                         child: Container(
+          //                           width:
+          //                               MediaQuery.of(context).size.width / 2.2,
+          //                           decoration: BoxDecoration(
+          //                             color: Colors.grey.shade200,
+          //                             borderRadius: BorderRadius.circular(40),
+          //                           ),
+          //                           padding: const EdgeInsets.symmetric(
+          //                               vertical: 15, horizontal: 20),
+          //                           child: const Center(
+          //                             child: Text(
+          //                               'Cancel',
+          //                               style: TextStyle(
+          //                                 color: Colors.black,
+          //                                 fontWeight: FontWeight.bold,
+          //                               ),
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ),
+          //                       InkWell(
+          //                         onTap: () {
+          //                           saveData(tokenValue);
+          //                           Navigator.of(context).pop(false);
+          //                         },
+          //                         child: Container(
+          //                           width:
+          //                               MediaQuery.of(context).size.width / 2.2,
+          //                           decoration: BoxDecoration(
+          //                             color: const Color(0xFFE58500),
+          //                             borderRadius: BorderRadius.circular(40),
+          //                           ),
+          //                           padding: const EdgeInsets.symmetric(
+          //                               vertical: 15, horizontal: 20),
+          //                           child: const Center(
+          //                             child: Text(
+          //                               'Save',
+          //                               style: TextStyle(
+          //                                 color: Colors.black,
+          //                                 fontWeight: FontWeight.bold,
+          //                               ),
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       )
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           );
+          //         });
+          //       },
+          //     );
+          //   },
+          //   child: const Icon(
+          //     Icons.more_vert_rounded,
+          //     size: 25,
+          //     color: Colors.white,
+          //   ),
+          // ),
+        ],
+      ),
+    );
+  }
+
+  // Widget chats() {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     scrollDirection: Axis.vertical,
+  //     itemCount: chatList.length,
+  //     itemBuilder: (context, index) => _itemChat(
+  //       chat: 0,
+  //       message:"",
+  //     ),
+  //   );
+  // }
+
+  // Widget _bodyChat() {
+  //   return Expanded(
+  //     child: Container(
+  //       padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+  //       width: double.infinity,
+  //       decoration: const BoxDecoration(
+  //         borderRadius: BorderRadius.only(
+  //             topLeft: Radius.circular(45), topRight: Radius.circular(45)),
+  //         color: Colors.white,
+  //       ),
+  //       child: ListView(
+  //         physics: const BouncingScrollPhysics(),
+  //         children: [
+  //           ListView.builder(
+  //             shrinkWrap: true,
+  //             scrollDirection: Axis.vertical,
+  //             itemCount: chatList.length,
+  //             itemBuilder: (context, index) => _itemChat(
+  //               chat: 0,
+  //               message:"",
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  _itemChat({required int chat, required String message}) {
+    return InkWell(
+      onLongPress: ()async{
+        await Clipboard.setData(
+            ClipboardData(
+                text:message
+            )
+        );
+        AnimatedSnackBar.material(
+          'Copied Successfully',
+          duration: Duration(seconds: 2),
+          type: AnimatedSnackBarType
+              .success,
+        ).show(
+          context,
+        );
+      },
+      onTap: (){
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+        //remove keyboard on touching anywhere on the screen.
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+      },
+      child: Row(
+        mainAxisAlignment:
+            chat == 0 ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Flexible(
+            child: Container(
+              margin: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 10,
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 10,
+              ),
+              decoration: BoxDecoration(
+                color: chat == 0 ? Colors.indigo.shade100 : Colors.indigo.shade50,
+                borderRadius: chat == 0
+                    ? const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                      )
+                    : const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
                       ),
-                    );
-                  });
-                },
-              );
-            },
-            child: const Icon(
-              Icons.more_vert_rounded,
-              size: 25,
-              color: Colors.white,
+              ),
+              child: chatWidget(message),
             ),
           ),
         ],
@@ -236,94 +386,34 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget chats() {
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemCount: chatList.length,
-      itemBuilder: (context, index) => _itemChat(
-        chat: 0,
-        message:"",
-      ),
-    );
-  }
-
-  Widget _bodyChat() {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(45), topRight: Radius.circular(45)),
-          color: Colors.white,
-        ),
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            chats(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  _itemChat({required int chat, required String message}) {
-    return Row(
-      mainAxisAlignment:
-          chat == 0 ? MainAxisAlignment.end : MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Flexible(
-          child: Container(
-            margin: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-              top: 10,
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 10,
-            ),
-            decoration: BoxDecoration(
-              color: chat == 0 ? Colors.indigo.shade100 : Colors.indigo.shade50,
-              borderRadius: chat == 0
-                  ? const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    )
-                  : const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-            ),
-            child: chatWidget(message),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget chatWidget(String text) {
-    return SizedBox(
-      width: 250.0,
-      child: DefaultTextStyle(
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 16,
-        ),
-        child: AnimatedTextKit(
-          animatedTexts: [
-            TyperAnimatedText(
-              text.replaceFirst('\n\n', ''),
-            ),
-          ],
-          repeatForever: false,
-          totalRepeatCount: 1,
-        ),
-      ),
+    return
+
+
+    SizedBox(
+    width: 250.0,
+    child: DefaultTextStyle(
+    style: const TextStyle(
+    color: Colors.black,
+    fontSize: 16,
+    ),
+    child: AnimatedTextKit(
+    animatedTexts: [
+    TyperAnimatedText(
+    text.replaceFirst('\n\n', ''),
+    ),
+    ],
+    repeatForever: false,
+    totalRepeatCount: 1,
+    onFinished: (){
+    controller.animateTo(
+    controller.position.maxScrollExtent,
+    duration: Duration(milliseconds: 500),
+    curve: Curves.easeIn,
+    );
+    },
+    ),
+    ),
     );
   }
 
@@ -339,7 +429,17 @@ class _ChatPageState extends State<ChatPage> {
             decoration: InputDecoration(
               hintText: 'Type your message...',
               suffixIcon: InkWell(
-                onTap: (() async {
+                onTap:(()async{
+                    controller.animateTo(
+                      controller.position.maxScrollExtent,
+                                        duration: Duration(milliseconds: 500),
+                                        curve: Curves.easeIn,
+                                      );
+                  _ChatBloc.add(SendMessage((b) => b
+                    ..Msg= mesageController.text.toString()
+                      ..Model = "XD"
+                  ));
+                  mesageController.clear();
                   // messagePrompt = mesageController.text.toString();
                   // setState(() {
                   //   chatList.add(Chat(msg: messagePrompt, chat: 0));

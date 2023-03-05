@@ -5,6 +5,7 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:chatgpt/models/ChatModel/ChatModel.dart';
 import 'package:chatgpt/models/ChatModel/ChoicesModel.dart';
+import 'package:chatgpt/models/ChatModel/MessageModel.dart';
 import 'package:chatgpt/models/ChatModel/UsageModel.dart';
 import 'package:chatgpt/models/ImageModel/ImageModel.dart';
 import 'package:chatgpt/models/ModelsModel/ModelsData.dart';
@@ -22,7 +23,10 @@ part 'serializer.g.dart';
   UsageModel,
   ChatModel,
   ImageModel,
+  MessageModel,
 ])
+
+
 
 final Serializers serializers = (_$serializers.toBuilder()
       ..addPlugin(StandardJsonPlugin())
@@ -35,6 +39,14 @@ final Serializers serializers = (_$serializers.toBuilder()
         ],
       )),
           () => ListBuilder<ModelsData>())
+  ..addBuilderFactory(
+      (const FullType(
+        BuiltList,
+        [
+          FullType(MessageModel),
+        ],
+      )),
+          () => ListBuilder<MessageModel>())
   ..addBuilderFactory(
       (const FullType(
         BuiltList,

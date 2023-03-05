@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names, file_names
+import 'package:chatgpt/UI/Chat/bloc/Chat_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:chatgpt/UI/Auth/Login_screen/bloc/login_bloc.dart';
-import 'package:chatgpt/UI/Auth/SignUp_Screen/bloc/SignUp_bloc.dart';
 import 'package:chatgpt/UI/Home/HomeScreen/bloc/HomePage_Bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'Data/http_helper/Ihttp_helper.dart';
@@ -34,6 +34,7 @@ Future iniGetIt() async {
   //factory means this dependency injection will provide us with new instance of get it everytime its called
   //so sometimes we call bloc in dispose which leads stream to close so useing the same instance that means it will be closed.
  sl.registerFactory(() => loginBloc(sl()));
+ sl.registerFactory(() => ChatBloc(sl()));
 // sl.registerFactory(() => SignUpBloc(sl()));
 // sl.registerFactory(() => SliderBloc(sl()));
  sl.registerFactory(() => HomePageBloc(sl()));

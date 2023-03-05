@@ -33,21 +33,21 @@ class HttpHelper implements IHttpHelper {
   Future<ChatModel> SendMessageToChatGpt(
       String Msg,
       String model,
-      String max_tokens
+      int max_tokens
       )async{
     try {
       var formdata = {
-        {
-          "model":model,
-          "prompt":Msg,
-          "max_tokens":max_tokens
-        }
+
+        "model":"gpt-3.5-turbo",
+        "messages":[{"role": "user", "content": Msg}]
+
       };
       final response = await _dio!
           .post(
-        "/completions"
+        "/chat/completions"
           , data: formdata,options: Options(headers: {
-        "Accept" :"application/json"
+        "Accept" :"application/json",
+        "Authorization" :"Bearer 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"
       }));
 
       if (response.statusCode == 200){

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:chatgpt/Data/repository/irepository.dart';
+import 'package:chatgpt/UI/Chat/pages/ChatPage.dart';
 import 'Chat_event.dart';
 import 'Chat_state.dart';
 
@@ -29,18 +30,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ..isLoading = true
           ..error = ""
           ..success = false
-         //..data = null
+        ..data = null
+        );
+        ChatComponents componentss = ChatComponents();
+        componentss.msg = event.Msg!;
+        componentss.is_me = 0;
+        state.chatList!.add(componentss);
+
+       final date = await _repository.SendMessageToChatGpt(event.Msg!,event.Model!,20);
+       print(date);
+
+
+
+        yield state.rebuild((b) => b
+          ..isLoading = false
+          ..error = ""
+          ..success= true
+          ..data.replace(date)
         );
 
-    //    final date = await _repository.AppleSignIN(event.Email!, event.FirstName!, event.Lastname!, event.fcmToken!);
-      //  print(date);
+        ChatComponents componentss2 = ChatComponents();
+        componentss2.msg = state.data!.choices![0].message!.content!;
+        componentss2.is_me = 1;
+        state.chatList!.add(componentss2);
 
-        // yield state.rebuild((b) => b
-        //   ..isLoading = false
-        //   ..error = ""
-        //   ..success= true
-        //   ..data.replace(date)
-        // );
 
       } catch (e) {
         print('get Error $e');
@@ -48,8 +61,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ..isLoading = false
           ..error = "Something went wrong"
           ..success = false
-         // ..data = null
+       ..data = null
         );
+      }
+    }
+    if (event is SetChatComponents) {
+      try {
+
+        ChatComponents componentss = ChatComponents();
+        componentss.msg = event.Msg!;
+        componentss.is_me = 1;
+        state.chatList!.add(componentss);
+
+      } catch (e) {
+        print('get Error $e');
+
       }
     }
 
