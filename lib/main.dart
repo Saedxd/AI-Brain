@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'dart:io' show Platform;
+import 'package:chatgpt/Core/constants/strings.dart';
+
+
 import 'package:built_value/built_value.dart';
 import 'package:chatgpt/App/app.dart';
 import 'package:chatgpt/Injection.dart';
@@ -88,3 +92,23 @@ void main() async {
 //git push -u origin main
 
 
+class AdMobService {
+  static String? get bannerAdUnitId {
+    if (Platform.isAndroid) {
+      return ANDROID_BANNER_ADD_ID;
+    } else if (Platform.isIOS) {
+      return "";
+    }
+    return null;
+  }
+
+  static String? get interstitialAdUnitId {
+    if (Platform.isAndroid) {
+      return ANDROID_INTERSTITIAL_ADD_ID;
+    } else if (Platform.isIOS) {
+      return "";
+    }
+    return null;
+  }
+
+}
