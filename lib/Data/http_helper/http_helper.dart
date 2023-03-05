@@ -46,9 +46,7 @@ class HttpHelper implements IHttpHelper {
           .post(
         "/chat/completions"
           , data: formdata,options: Options(headers: {
-        "Accept" :"application/json",
-        "Authorization" :"Bearer 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",
-        "OpenAI-Organization" :"org-8A6M1b5UUpqI0nwEWGKp49lp"
+
       }));
 
 
