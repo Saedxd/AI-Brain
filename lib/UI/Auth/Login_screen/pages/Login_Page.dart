@@ -4,7 +4,7 @@
 // import 'package:chatgpt/Core/theme/theme_constants.dart';
 // import 'package:chatgpt/Data/prefs_helper/iprefs_helper.dart';
 // import 'package:chatgpt/Injection.dart';
-// import 'package:chatgpt/UI/Auth/Login_screen/bloc/login_state.dart';
+// import 'package:chatgpt/UI/Auth/Login_screen/bloc/ImageChat_state.dart';
 // import 'package:country_codes/country_codes.dart';
 // import 'package:flutter/gestures.dart';
 // import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -27,7 +27,7 @@
 //
 //
 // import '../../SignUp_Screen/pages/SignUp1.dart';
-// import '../bloc/login_bloc.dart';
+// import '../bloc/ImageChat_bloc.dart';
 // //import 'package:firebase_messaging/firebase_messaging.dart' as fire;
 //
 // class Login extends StatefulWidget {

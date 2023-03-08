@@ -5,7 +5,7 @@ import 'package:chatgpt/Injection.dart';
 import 'package:chatgpt/UI/Chat/pages/ChatPage.dart';
 import 'package:chatgpt/UI/Home/HomeScreen/bloc/HomePage_Bloc.dart';
 import 'package:chatgpt/UI/Home/HomeScreen/bloc/HomePage_State.dart';
-import 'package:chatgpt/UI/dalle_page.dart';
+import 'package:chatgpt/UI/ImageChat/Pages/dalle_page.dart';
 import 'package:chatgpt/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

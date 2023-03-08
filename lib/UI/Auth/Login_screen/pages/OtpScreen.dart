@@ -2,9 +2,9 @@
 // import 'package:bubbles/Data/prefs_helper/iprefs_helper.dart';
 // import 'package:bubbles/Injection.dart';
 // import 'package:bubbles/UI/NavigatorTopBar_Screen/pages/NavigatorTopBar.dart';
-// import 'package:bubbles/UI/Onboarding/Login_screen/bloc/login_bloc.dart';
-// import 'package:bubbles/UI/Onboarding/Login_screen/bloc/login_event.dart';
-// import 'package:bubbles/UI/Onboarding/Login_screen/bloc/login_state.dart';
+// import 'package:bubbles/UI/Onboarding/Login_screen/bloc/ImageChat_bloc.dart';
+// import 'package:bubbles/UI/Onboarding/Login_screen/bloc/ImageChat_event.dart';
+// import 'package:bubbles/UI/Onboarding/Login_screen/bloc/ImageChat_state.dart';
 // import 'package:bubbles/UI/Onboarding/SignUp_Screen/pages/Onboarding2.dart';
 // import 'package:bubbles/core/Classes/Classes.dart';
 // import 'package:bubbles/core/Functions/Fucntions.dart';

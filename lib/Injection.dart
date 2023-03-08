@@ -10,6 +10,7 @@ import 'Data/prefs_helper/iprefs_helper.dart';
 import 'Data/prefs_helper/prefs_helper.dart';
 import 'Data/repository/irepository.dart';
 import 'Data/repository/repository.dart';
+import 'UI/ImageChat/bloc/ImageChat_bloc.dart';
 
 
 final sl = GetIt.instance;
@@ -39,6 +40,7 @@ Future iniGetIt() async {
 // sl.registerFactory(() => SliderBloc(sl()));
  sl.registerFactory(() => HomePageBloc(sl()));
  // sl.registerFactory(() => HomePageBloc(sl()));
+ sl.registerFactory(() => ImageChatbloc(sl()));
 
 }
 //we use this package for dependency injection and use for connecting all our APP with each other
